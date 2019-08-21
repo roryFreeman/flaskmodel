@@ -38,7 +38,10 @@ result = predict(X_test)
 print(f'the result is {result}')
 
 print(X_test)
+result = predict([[1,126,60,0,0,30.1,0.3,47]])
+print(f'the result is {result}')
 
+print(Y_test)
 
 
 

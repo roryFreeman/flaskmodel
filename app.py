@@ -11,14 +11,16 @@ def predict_function(data, model):
     model = f'models/{model}.pkl'
     loaded_model = pickle.load(open(model, 'rb'))
     predicted = loaded_model.predict(data)
+    predicted = predicted.tolist()
     return predicted
 
 # handle predict
 @app.route('/model/api/v1.0/predict', methods=['POST'])                  # at the end point /
 def model_predict():   
     if request.json:
-        data = request.json['data']
-        model = request.json['model']
+        json_rec = request.json['data']
+        model = json_rec['model']
+        data = json_rec['data']
         result = predict_function(data, model)
         req_json = request.json
         request.json['data']['prediction'] = result
