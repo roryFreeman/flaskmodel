@@ -1,8 +1,27 @@
-from flask import Flask           # import flask
+from flask import Flask, jsonify, request, session, json   
+import pickle        
+
 app = Flask(__name__)             # create an app instance
 
-@app.route("/")                   # at the end point /
-def hello():                      # call method hello
-    return "Hello World! Hello Rory"         # which returns "hello world"
-if __name__ == "__main__":        # on running python app.py
-    app.run()                     # run the flask app
+# predict function
+def predict_function(data, model):
+    model = f'models/{model}.pkl'
+    loaded_model = pickle.load(open(model, 'rb'))
+    predicted = loaded_model.predict(data)
+    return predicted
+
+# handle predict
+@app.route('/model/api/v1.0/predict', methods=['POST'])                  # at the end point /
+def model_predict():   
+    if request.json:
+        data = request.json['data']
+        model = request.json['model']
+        result = predict_function(data, model)
+        req_json = request.json
+        request.json['data']['prediction'] = result
+        return jsonify(req_json)
+    else:
+        return "Must post json"                  
+            
+if __name__ == "__main__":        
+    app.run()                    
