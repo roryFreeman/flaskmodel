@@ -1,4 +1,7 @@
-from flask import Flask, jsonify, request, session, json   
+from flask import Flask, jsonify, request, session, json  
+import pandas as pd
+from sklearn import model_selection
+from sklearn.linear_model import LogisticRegression
 import pickle        
 
 app = Flask(__name__)             # create an app instance
